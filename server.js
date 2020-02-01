@@ -72,12 +72,8 @@ function makeid(length) {
 
 // USER CONNECT
 gameserver.on('connection', function(socket) {
-    var clientData = {};
-    clientData.id = socket.id;
-    socket.emit('connected', clientData);
     // JOIN ROOM 
     socket.on('join room', function(joinData) {
-        console.log(joinData);
         if(joinData.room == false){
             var room = 0;
             var roomIdLength = 4;
@@ -91,6 +87,12 @@ gameserver.on('connection', function(socket) {
             var room = joinData.room;
             console.log("joined room");
         }
+
+        var clientData = {};
+        clientData.id = socket.id;
+        clientData.room = room;
+        socket.emit('connected', clientData);
+        console.log(clientData);
         if(!rooms.includes(room)){
             rooms.push(room);
             roomsPlayers[room] = [];
@@ -99,7 +101,6 @@ gameserver.on('connection', function(socket) {
             roomsPlayers[room].push(socket.id);
         }
         socket.join(room);
-        console.log(room);
         connectedUsers[socket.id] = {};
         connectedUsers[socket.id].ghosts = [];
         connectedUsers[socket.id].ghostCount = 0;
