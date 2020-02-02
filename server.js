@@ -119,12 +119,22 @@ gameserver.on('connection', function(socket) {
             connectedUsers[socket.id].coords = move;
         }
     });
-    socket.on('reset', function(){
+    socket.on('reset', function(save){
         if(Date.now()-connectedUsers[socket.id].lastReset>500){
             connectedUsers[socket.id].lastReset = Date.now();
-            connectedUsers[socket.id].ghostCount++;
+            if(save===true){
+                connectedUsers[socket.id].ghostCount++;  
+            } else if(save===false) {
+                delete connectedUsers[socket.id].ghosts[connectedUsers[socket.id].ghostCount];
+            } else {
+                for(i=connectedUsers[socket.id].ghostCount-1;i>=save;i--){
+                    connectedUsers[socket.id].ghosts.splice(i, 1);
+                }
+                // connectedUsers[socket.id].ghosts
+                connectedUsers[socket.id].ghostCount = save+1;
+            }
             connectedUsers[socket.id].tickTime = run[connectedUsers[socket.id].room];
-            var resetData = {};
+            var resetData = {};  
             resetData.id = socket.id;
             gameserver.to(connectedUsers[socket.id].room).emit('reset', resetData);
         }
