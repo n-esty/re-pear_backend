@@ -1,7 +1,8 @@
+const PORT = process.env.PORT || 3000;
 // SOCKET.IO VARIABLES
 var io = require('socket.io');
 var async = require('async');
-var server = io.listen(80);
+var server = io.listen(PORT);
 var gameserver = server.of('/game');
 var chatserver = server.of('/chat');
 
@@ -12,7 +13,7 @@ let loopEndTime;
 let waitTime;
 let rooms = [];
 let roomsPlayers = {};
-console.log("Now listening on port 3000");
+console.log(`Now listening on port ${ PORT }`);
 
 function makeid(length) {
     var result           = '';
