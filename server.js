@@ -1,7 +1,7 @@
 // SOCKET.IO VARIABLES
 var io = require('socket.io');
 var async = require('async');
-var server = io.listen(3000);
+var server = io.listen(80);
 var gameserver = server.of('/game');
 var chatserver = server.of('/chat');
 
@@ -12,7 +12,7 @@ let loopEndTime;
 let waitTime;
 let rooms = [];
 let roomsPlayers = {};
-//console.log("Now listening on port 3000");
+console.log("Now listening on port 3000");
 
 function makeid(length) {
     var result           = '';
